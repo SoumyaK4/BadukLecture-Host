@@ -20,6 +20,8 @@ def search():
 
 @app.route('/api/search')
 def api_search():
+    page = request.args.get('page', 1, type=int)
+    per_page = 12
     query = request.args.get('q', '')
     topic_ids = request.args.getlist('topics[]')
     tag_ids = request.args.getlist('tags[]')
@@ -47,16 +49,25 @@ def api_search():
     elif sort_by == 'rank':
         lectures_query = lectures_query.order_by(Lecture.rank_id)
 
-    lectures = lectures_query.all()
-    return jsonify([{
-        'id': l.id,
-        'title': l.title,
-        'youtube_id': l.youtube_id,
-        'thumbnail_url': l.thumbnail_url,
-        'topics': [t.name for t in l.topics],
-        'tags': [t.name for t in l.tags],
-        'rank': l.rank.name if l.rank else None
-    } for l in lectures])
+    # Add pagination
+    pagination = lectures_query.paginate(page=page, per_page=per_page, error_out=False)
+    lectures = pagination.items
+
+    return jsonify({
+        'lectures': [{
+            'id': l.id,
+            'title': l.title,
+            'youtube_id': l.youtube_id,
+            'thumbnail_url': l.thumbnail_url,
+            'publish_date': l.publish_date.isoformat(),
+            'topics': [t.name for t in l.topics],
+            'tags': [t.name for t in l.tags],
+            'rank': l.rank.name if l.rank else None
+        } for l in lectures],
+        'has_next': pagination.has_next,
+        'total_pages': pagination.pages,
+        'current_page': pagination.page
+    })
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

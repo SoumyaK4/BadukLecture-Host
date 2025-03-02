@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const rankFilter = document.getElementById('rank-filter');
     const sortSelect = document.getElementById('sort-select');
     const resultsContainer = document.getElementById('results-container');
+    const loadMoreBtn = document.getElementById('load-more');
 
+    let currentPage = 1;
     let debounceTimer;
 
     // Debounce function
@@ -15,7 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Search function
-    function performSearch() {
+    function performSearch(resetPage = true) {
+        if (resetPage) {
+            currentPage = 1;
+        }
+
         const searchQuery = searchInput.value;
         const selectedTopic = topicFilter.value;
         const selectedTag = tagFilter.value;
@@ -24,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const queryParams = new URLSearchParams();
         queryParams.set('q', searchQuery);
+        queryParams.set('page', currentPage);
         if (selectedTopic) queryParams.append('topics[]', selectedTopic);
         if (selectedTag) queryParams.append('tags[]', selectedTag);
         if (selectedRank) queryParams.set('rank', selectedRank);
@@ -31,12 +38,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetch(`/api/search?${queryParams.toString()}`)
             .then(response => response.json())
-            .then(lectures => {
-                resultsContainer.innerHTML = '';
-                lectures.forEach(lecture => {
+            .then(data => {
+                if (resetPage) {
+                    resultsContainer.innerHTML = '';
+                }
+
+                data.lectures.forEach(lecture => {
                     const card = createLectureCard(lecture);
                     resultsContainer.appendChild(card);
                 });
+
+                loadMoreBtn.style.display = data.has_next ? 'block' : 'none';
             })
             .catch(error => {
                 console.error('Search error:', error);
@@ -87,11 +99,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listeners
-    searchInput.addEventListener('input', () => debounce(performSearch, 300));
-    topicFilter.addEventListener('change', performSearch);
-    tagFilter.addEventListener('change', performSearch);
-    rankFilter.addEventListener('change', performSearch);
-    sortSelect.addEventListener('change', performSearch);
+    searchInput.addEventListener('input', () => debounce(() => performSearch(true), 300));
+    topicFilter.addEventListener('change', () => performSearch(true));
+    tagFilter.addEventListener('change', () => performSearch(true));
+    rankFilter.addEventListener('change', () => performSearch(true));
+    sortSelect.addEventListener('change', () => performSearch(true));
+
+    loadMoreBtn.addEventListener('click', () => {
+        currentPage++;
+        performSearch(false);
+    });
 
     // Get URL parameters and set initial filter values
     const urlParams = new URLSearchParams(window.location.search);
@@ -108,5 +125,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Initial search
-    performSearch();
+    performSearch(true);
 });

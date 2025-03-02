@@ -280,3 +280,63 @@ footer p {
     background: none;
     border: none;
 }
+
+/* Search page styles */
+.search-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.search-box {
+    margin-bottom: 2rem;
+}
+
+.search-box .form-control {
+    height: 50px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border-color: var(--input-border);
+}
+
+.filters {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.filter-section .form-select {
+    width: 100%;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border-color: var(--input-border);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .filters {
+        flex-direction: column;
+    }
+
+    .filter-section {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}

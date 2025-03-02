@@ -1,61 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
+<div class="search-container">
+    <!-- Search Box -->
+    <div class="search-box mb-4">
+        <input type="text" id="search-input" class="form-control" placeholder="Search lectures...">
+    </div>
+
     <!-- Filters -->
-    <div class="col-12 mb-4">
-        <div class="filters">
-            <div class="filter-row">
-                <div class="filter-group">
-                    <input type="text" id="search-input" class="form-control" placeholder="Search lectures...">
-                </div>
+    <div class="filters mb-4">
+        <div class="filter-section">
+            <label class="filter-label">Topics</label>
+            <select id="topic-filter" class="form-select">
+                <option value="">All Topics</option>
+                {% for topic in topics %}
+                <option value="{{ topic.id }}">{{ topic.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-                <div class="filter-group">
-                    <label for="topic-filter" class="form-label">Topics</label>
-                    <select id="topic-filter" class="form-select">
-                        <option value="">All Topics</option>
-                        {% for topic in topics %}
-                        <option value="{{ topic.id }}">{{ topic.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+        <div class="filter-section">
+            <label class="filter-label">Tags</label>
+            <select id="tag-filter" class="form-select">
+                <option value="">All Tags</option>
+                {% for tag in tags %}
+                <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-                <div class="filter-group">
-                    <label for="tag-filter" class="form-label">Tags</label>
-                    <select id="tag-filter" class="form-select">
-                        <option value="">All Tags</option>
-                        {% for tag in tags %}
-                        <option value="{{ tag.id }}">{{ tag.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+        <div class="filter-section">
+            <label class="filter-label">Rank</label>
+            <select id="rank-filter" class="form-select">
+                <option value="">All Ranks</option>
+                {% for rank in ranks %}
+                <option value="{{ rank.id }}">{{ rank.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-                <div class="filter-group">
-                    <label for="rank-filter" class="form-label">Rank</label>
-                    <select id="rank-filter" class="form-select">
-                        <option value="">All Ranks</option>
-                        {% for rank in ranks %}
-                        <option value="{{ rank.id }}">{{ rank.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label for="sort-select" class="form-label">Sort By</label>
-                    <select id="sort-select" class="form-select">
-                        <option value="date">Date</option>
-                        <option value="rank">Rank</option>
-                    </select>
-                </div>
-            </div>
+        <div class="filter-section">
+            <label class="filter-label">Sort By</label>
+            <select id="sort-select" class="form-select">
+                <option value="date">Date</option>
+                <option value="rank">Rank</option>
+            </select>
         </div>
     </div>
 
     <!-- Results -->
-    <div class="col-12">
-        <div id="results-container" class="row">
-            <!-- Results will be dynamically populated here -->
-        </div>
+    <div id="results-container" class="row">
+        <!-- Results will be dynamically populated here -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container text-center mt-4">
+        <button id="load-more" class="btn btn-primary" style="display: none;">Load More</button>
     </div>
 </div>
 
