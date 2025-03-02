@@ -17,15 +17,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search function
     function performSearch() {
         const searchQuery = searchInput.value;
-        const selectedTopics = Array.from(topicFilter.selectedOptions).map(option => option.value);
-        const selectedTags = Array.from(tagFilter.selectedOptions).map(option => option.value);
+        const selectedTopic = topicFilter.value;
+        const selectedTag = tagFilter.value;
         const selectedRank = rankFilter.value;
         const sortBy = sortSelect.value;
 
         const queryParams = new URLSearchParams();
         queryParams.set('q', searchQuery);
-        selectedTopics.forEach(topic => queryParams.append('topics[]', topic));
-        selectedTags.forEach(tag => queryParams.append('tags[]', tag));
+        if (selectedTopic) queryParams.append('topics[]', selectedTopic);
+        if (selectedTag) queryParams.append('tags[]', selectedTag);
         if (selectedRank) queryParams.set('rank', selectedRank);
         queryParams.set('sort', sortBy);
 
@@ -38,7 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     resultsContainer.appendChild(card);
                 });
             })
-            .catch(error => console.error('Search error:', error));
+            .catch(error => {
+                console.error('Search error:', error);
+                resultsContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Error loading lectures. Please try again.</div></div>';
+            });
     }
 
     // Create lecture card
@@ -57,12 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="lecture-meta">
                     <div class="topics mb-1">
                         ${lecture.topics.map(topic => 
-                            `<span class="badge bg-primary me-1" onclick="selectTopic('${topic}')" style="cursor: pointer;">${topic}</span>`
+                            `<span class="badge bg-primary me-1" onclick="window.location.href='/search?topic=${topic}'">${topic}</span>`
                         ).join('')}
                     </div>
                     <div class="tags mb-1">
                         ${lecture.tags.map(tag => 
-                            `<span class="badge bg-info me-1" onclick="selectTag('${tag}')" style="cursor: pointer;">${tag}</span>`
+                            `<span class="badge bg-info me-1" onclick="window.location.href='/search?tag=${tag}'">${tag}</span>`
                         ).join('')}
                     </div>
                     ${lecture.rank ? 
@@ -70,28 +73,18 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span class="badge bg-secondary">${lecture.rank}</span>
                         </div>` : ''
                     }
+                    <div class="date text-muted small">
+                        ${new Date(lecture.publish_date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}
+                    </div>
                 </div>
             </div>
         `;
         return card;
     }
-
-    // Filter by topic/tag
-    window.selectTopic = function(topicName) {
-        const option = Array.from(topicFilter.options).find(opt => opt.text === topicName);
-        if (option) {
-            option.selected = true;
-            performSearch();
-        }
-    };
-
-    window.selectTag = function(tagName) {
-        const option = Array.from(tagFilter.options).find(opt => opt.text === tagName);
-        if (option) {
-            option.selected = true;
-            performSearch();
-        }
-    };
 
     // Event listeners
     searchInput.addEventListener('input', () => debounce(performSearch, 300));
@@ -99,6 +92,20 @@ document.addEventListener('DOMContentLoaded', function() {
     tagFilter.addEventListener('change', performSearch);
     rankFilter.addEventListener('change', performSearch);
     sortSelect.addEventListener('change', performSearch);
+
+    // Get URL parameters and set initial filter values
+    const urlParams = new URLSearchParams(window.location.search);
+    const topic = urlParams.get('topic');
+    const tag = urlParams.get('tag');
+
+    if (topic) {
+        const option = Array.from(topicFilter.options).find(opt => opt.text === topic);
+        if (option) option.selected = true;
+    }
+    if (tag) {
+        const option = Array.from(tagFilter.options).find(opt => opt.text === tag);
+        if (option) option.selected = true;
+    }
 
     // Initial search
     performSearch();

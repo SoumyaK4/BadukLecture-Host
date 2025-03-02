@@ -65,6 +65,7 @@ main {
 }
 
 .navbar-toggler {
+    color: var(--navbar-toggler);
     border-color: var(--border-color);
     display: none;
 }
@@ -97,6 +98,30 @@ main {
     border: none;
     background: none;
     color: var(--text-color);
+}
+
+/* Search filters */
+.filters {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.filter-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
 }
 
 /* Cards */
@@ -163,6 +188,15 @@ main {
     margin-top: auto;
 }
 
+.badge {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.badge:hover {
+    opacity: 0.8;
+}
+
 /* Footer */
 footer {
     background-color: var(--nav-bg);
@@ -198,12 +232,13 @@ footer p {
     .nav-item {
         margin: 0.5rem 0;
     }
-}
 
-@media (max-width: 768px) {
-    .video-container {
-        width: 95%;
-        margin: 1rem auto;
+    .filter-row {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
     }
 }
 
@@ -242,39 +277,6 @@ footer p {
     color: white;
     font-size: 2rem;
     cursor: pointer;
-}
-
-/* Search filters */
-.filters {
-    background: var(--card-bg);
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-color);
-}
-
-.filter-group {
-    margin-bottom: 1rem;
-}
-
-/* Card styles for admin pages */
-.card {
-    background-color: var(--card-bg);
-    border-color: var(--border-color);
-}
-
-.card-body {
-    color: var(--text-color);
-}
-
-.list-group-item {
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    border-color: var(--border-color);
-}
-
-@media (max-width: 768px) {
-    .grid-container {
-        grid-template-columns: 1fr;
-    }
+    background: none;
+    border: none;
 }
