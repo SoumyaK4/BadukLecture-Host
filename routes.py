@@ -13,7 +13,10 @@ def home():
 
 @app.route('/search')
 def search():
-    return render_template('search.html')
+    topics = Topic.query.all()
+    tags = Tag.query.all()
+    ranks = Rank.query.all()
+    return render_template('search.html', topics=topics, tags=tags, ranks=ranks)
 
 @app.route('/api/search')
 def api_search():

@@ -5,18 +5,32 @@
     {% for lecture in lectures %}
     <div class="col-md-4 mb-4">
         <div class="lecture-card">
-            <div class="lecture-thumbnail" data-video-id="{{ lecture.youtube_id }}">
+            <div class="lecture-thumbnail" onclick="openVideoModal('{{ lecture.youtube_id }}')" style="cursor: pointer;">
                 <img src="{{ lecture.thumbnail_url }}" alt="{{ lecture.title }}">
                 <i class="fas fa-play-circle play-button"></i>
             </div>
-            <h3 class="lecture-title">{{ lecture.title }}</h3>
+            <h3 class="lecture-title" onclick="openVideoModal('{{ lecture.youtube_id }}')" style="cursor: pointer;">
+                {{ lecture.title }}
+            </h3>
             <div class="lecture-meta">
-                {% for topic in lecture.topics %}
-                    <span class="badge bg-primary me-1">{{ topic.name }}</span>
-                {% endfor %}
+                <div class="topics mb-1">
+                    {% for topic in lecture.topics %}
+                        <span class="badge bg-primary me-1">{{ topic.name }}</span>
+                    {% endfor %}
+                </div>
+                <div class="tags mb-1">
+                    {% for tag in lecture.tags %}
+                        <span class="badge bg-info me-1">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
                 {% if lecture.rank %}
-                    <span class="badge bg-secondary">{{ lecture.rank.name }}</span>
+                    <div class="rank mb-1">
+                        <span class="badge bg-secondary">{{ lecture.rank.name }}</span>
+                    </div>
                 {% endif %}
+                <div class="date text-muted small">
+                    {{ lecture.publish_date.strftime('%B %d, %Y') }}
+                </div>
             </div>
             {% if current_user.is_authenticated %}
             <div class="mt-2">
