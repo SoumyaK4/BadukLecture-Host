@@ -111,6 +111,52 @@ def add_lecture():
 
     return render_template('admin/add_lecture.html', form=form)
 
+@app.route('/admin/lecture/edit/<int:lecture_id>', methods=['GET', 'POST'])
+@login_required
+def edit_lecture(lecture_id):
+    lecture = Lecture.query.get_or_404(lecture_id)
+    form = LectureForm()
+    form.topics.choices = [(t.id, t.name) for t in Topic.query.all()]
+    form.tags.choices = [(t.id, t.name) for t in Tag.query.all()]
+    form.rank.choices = [(r.id, r.name) for r in Rank.query.all()]
+
+    if form.validate_on_submit():
+        try:
+            # Update basic info
+            lecture.title = form.title.data
+
+            # Only update YouTube info if URL changed
+            if form.youtube_url.data != f"https://youtu.be/{lecture.youtube_id}":
+                video_info = get_youtube_video_info(form.youtube_url.data)
+                lecture.youtube_id = video_info['youtube_id']
+                lecture.thumbnail_url = video_info['thumbnail_url']
+                lecture.publish_date = video_info['publish_date']
+
+            # Update relationships
+            selected_topics = Topic.query.filter(Topic.id.in_(form.topics.data)).all()
+            selected_tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
+            selected_rank = Rank.query.filter(Rank.id.in_(form.rank.data)).first()
+
+            lecture.topics = selected_topics
+            lecture.tags = selected_tags
+            lecture.rank_id = selected_rank.id if selected_rank else None
+
+            db.session.commit()
+            flash('Lecture updated successfully!')
+            return redirect(url_for('home'))
+        except Exception as e:
+            logging.error(f"Error updating lecture: {str(e)}")
+            flash('Error updating lecture. Please check the form data.')
+
+    elif request.method == 'GET':
+        form.title.data = lecture.title
+        form.youtube_url.data = f"https://youtu.be/{lecture.youtube_id}"
+        form.topics.data = [topic.id for topic in lecture.topics]
+        form.tags.data = [tag.id for tag in lecture.tags]
+        form.rank.data = [lecture.rank_id] if lecture.rank_id else []
+
+    return render_template('admin/edit_lecture.html', form=form, lecture=lecture)
+
 @app.route('/admin/metadata', methods=['GET', 'POST'])
 @login_required
 def manage_metadata():
