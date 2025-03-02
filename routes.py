@@ -62,7 +62,7 @@ def api_search():
             'publish_date': l.publish_date.isoformat(),
             'topics': [t.name for t in l.topics],
             'tags': [t.name for t in l.tags],
-            'rank': l.rank.name if l.rank else None
+            'rank': Rank.query.get(l.rank_id).name if l.rank_id else None
         } for l in lectures],
         'has_next': pagination.has_next,
         'total_pages': pagination.pages,
