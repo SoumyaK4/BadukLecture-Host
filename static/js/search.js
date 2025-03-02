@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(lectures => {
                 resultsContainer.innerHTML = '';
+                if (lectures.length === 0) {
+                    resultsContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">No lectures found matching your criteria.</div></div>';
+                    return;
+                }
                 lectures.forEach(lecture => {
                     const card = createLectureCard(lecture);
                     resultsContainer.appendChild(card);
@@ -60,12 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="lecture-meta">
                     <div class="topics mb-1">
                         ${lecture.topics.map(topic => 
-                            `<span class="badge bg-primary me-1" onclick="window.location.href='/search?topic=${topic}'">${topic}</span>`
+                            `<span class="badge bg-primary me-1" onclick="window.location.href='/search?topic=${encodeURIComponent(topic)}'" style="cursor: pointer;">${topic}</span>`
                         ).join('')}
                     </div>
                     <div class="tags mb-1">
                         ${lecture.tags.map(tag => 
-                            `<span class="badge bg-info me-1" onclick="window.location.href='/search?tag=${tag}'">${tag}</span>`
+                            `<span class="badge bg-info me-1" onclick="window.location.href='/search?tag=${encodeURIComponent(tag)}'" style="cursor: pointer;">${tag}</span>`
                         ).join('')}
                     </div>
                     ${lecture.rank ? 

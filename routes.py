@@ -53,6 +53,7 @@ def api_search():
         'title': l.title,
         'youtube_id': l.youtube_id,
         'thumbnail_url': l.thumbnail_url,
+        'publish_date': l.publish_date.isoformat(),
         'topics': [t.name for t in l.topics],
         'tags': [t.name for t in l.tags],
         'rank': l.rank.name if l.rank else None

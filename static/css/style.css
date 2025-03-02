@@ -108,20 +108,29 @@ main {
     border: 1px solid var(--border-color);
 }
 
+.search-row {
+    margin-bottom: 1rem;
+}
+
 .filter-row {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    align-items: flex-end;
 }
 
 .filter-group {
     flex: 1;
-    min-width: 200px;
+    min-width: 150px;
+}
+
+.filter-group.search-input {
+    flex: 2;
 }
 
 .filter-group label {
     color: var(--text-color);
     margin-bottom: 0.5rem;
+    display: block;
 }
 
 /* Cards */
@@ -218,6 +227,13 @@ footer p {
 
     .navbar-collapse {
         display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--nav-bg);
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .navbar-collapse.show {
@@ -231,6 +247,7 @@ footer p {
 
     .nav-item {
         margin: 0.5rem 0;
+        width: 100%;
     }
 
     .filter-row {
@@ -239,6 +256,11 @@ footer p {
 
     .filter-group {
         width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .filter-group.search-input {
+        flex: 1;
     }
 }
 
@@ -252,17 +274,18 @@ footer p {
     height: 100%;
     background: rgba(0,0,0,0.9);
     z-index: 1000;
+    justify-content: center;
+    align-items: center;
 }
 
 .video-container {
     position: relative;
     width: 90%;
     max-width: 1000px;
-    margin: 2rem auto;
     padding-top: 56.25%;
 }
 
-.video-container iframe {
+#youtube-player {
     position: absolute;
     top: 0;
     left: 0;
@@ -272,8 +295,8 @@ footer p {
 
 .close-video {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: -2rem;
+    right: 0;
     color: white;
     font-size: 2rem;
     cursor: pointer;
