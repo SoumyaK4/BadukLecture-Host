@@ -528,10 +528,26 @@ body {
 }
 
 .form-card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 8px;
+    border: 1px solid var(--border-color);
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     padding: 25px;
+}
+
+/* Dark mode adjustments for admin pages */
+.card {
+    color: var(--text-color);
+}
+
+.card-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.alert-info {
+    background-color: rgba(13, 202, 240, 0.2);
+    color: var(--text-color);
+    border-color: rgba(13, 202, 240, 0.3);
 }
 
 /* Responsive */
