@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -8,8 +9,8 @@
     </div>
 
     <!-- Filters -->
-    <div class="filters mb-4">
-        <div class="filter-section">
+    <div class="filters mb-4 row">
+        <div class="filter-section col-md-3">
             <label class="filter-label">Topics</label>
             <select id="topic-filter" class="form-select">
                 <option value="">All Topics</option>
@@ -19,7 +20,7 @@
             </select>
         </div>
 
-        <div class="filter-section">
+        <div class="filter-section col-md-3">
             <label class="filter-label">Tags</label>
             <select id="tag-filter" class="form-select">
                 <option value="">All Tags</option>
@@ -29,7 +30,7 @@
             </select>
         </div>
 
-        <div class="filter-section">
+        <div class="filter-section col-md-3">
             <label class="filter-label">Rank</label>
             <select id="rank-filter" class="form-select">
                 <option value="">All Ranks</option>
@@ -39,28 +40,27 @@
             </select>
         </div>
 
-        <div class="filter-section">
+        <div class="filter-section col-md-3">
             <label class="filter-label">Sort By</label>
             <select id="sort-select" class="form-select">
-                <option value="date">Date</option>
-                <option value="rank">Rank</option>
+                <option value="date">Date (Newest First)</option>
+                <option value="rank">Rank (Beginner to Advanced)</option>
             </select>
         </div>
     </div>
 
     <!-- Results -->
-    <div id="results-container" class="row">
-        <!-- Results will be dynamically populated here -->
+    <div class="row" id="results-container">
+        <!-- Results will be loaded here dynamically -->
     </div>
 
-    <!-- Pagination -->
-    <div class="pagination-container text-center mt-4">
-        <button id="load-more" class="btn btn-primary" style="display: none;">Load More</button>
+    <!-- Load More Button -->
+    <div class="text-center mt-4">
+        <button id="load-more" class="btn btn-outline-primary" style="display: none;">Load More</button>
     </div>
 </div>
+{% endblock %}
 
 {% block extra_scripts %}
 <script src="{{ url_for('static', filename='js/search.js') }}"></script>
-<script src="{{ url_for('static', filename='js/video.js') }}"></script>
-{% endblock %}
 {% endblock %}

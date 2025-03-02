@@ -81,7 +81,9 @@ def api_search():
             'current_page': pagination.page
         })
     except Exception as e:
-        logging.error(f"Error in api_search: {str(e)}")
+        import traceback
+        error_details = traceback.format_exc()
+        logging.error(f"Error in api_search: {str(e)}\n{error_details}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/login', methods=['GET', 'POST'])
