@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Add New Lecture</h2>
+                    
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.title.label(class="form-label") }}
+                            {{ form.title(class="form-control") }}
+                            {% if form.title.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.title.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.youtube_url.label(class="form-label") }}
+                            {{ form.youtube_url(class="form-control", placeholder="https://www.youtube.com/watch?v=...") }}
+                            {% if form.youtube_url.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.youtube_url.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">Enter the full YouTube video URL</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.topics.label(class="form-label") }}
+                            {{ form.topics(class="form-select", multiple="multiple", size="5") }}
+                            {% if form.topics.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.topics.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple topics</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.tags.label(class="form-label") }}
+                            {{ form.tags(class="form-select", multiple="multiple", size="5") }}
+                            {% if form.tags.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.tags.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple tags</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.rank.label(class="form-label") }}
+                            {{ form.rank(class="form-select") }}
+                            {% if form.rank.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.rank.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary") }}
+                            <a href="{{ url_for('home') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
