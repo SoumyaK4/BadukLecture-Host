@@ -225,12 +225,31 @@ footer {
     padding: 1rem 0;
     border-top: 1px solid #444444;
     margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
 }
 
 footer p {
     color: #ffffff;
     margin: 0;
     font-size: 0.9rem;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.footer-icons a {
+    color: #ffffff;
+    font-size: 1.2rem;
+    transition: color 0.2s ease;
+}
+
+.footer-icons a:hover {
+    color: #cccccc;
 }
 
 /* Responsive */

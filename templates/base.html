@@ -36,6 +36,9 @@
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_panel') }}">Admin Panel</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('add_lecture') }}">Add Lecture</a>
                     </li>
                     <li class="nav-item">
@@ -80,10 +83,16 @@
         <div class="container py-3">
             <div class="row">
                 <div class="col-md-6">
-                    <p>&copy; 2025 Baduk Lectures. All rights reserved.</p>
+                    <p>&copy; 2025 SOUMYAK4</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p>A free resource for Go/Baduk/Weiqi players</p>
+                    <div class="footer-icons">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="Twitch"><i class="fab fa-twitch"></i></a>
+                        <a href="#" aria-label="Yin Yang"><i class="fas fa-yin-yang"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
