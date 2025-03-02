@@ -550,6 +550,22 @@ body {
     border-color: rgba(13, 202, 240, 0.3);
 }
 
+.list-group-item {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-outline-secondary:hover {
+    background-color: rgba(108, 117, 125, 0.2);
+    color: var(--text-color);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .filters {

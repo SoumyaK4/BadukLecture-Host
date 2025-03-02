@@ -26,7 +26,7 @@
 
                     <div class="list-group">
                         {% for topic in topics %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="list-group-item d-flex justify-content-between align-items-center" style="background-color: var(--card-bg); color: var(--text-color); border-color: var(--border-color);">
                             {{ topic.name }}
                             <form method="POST" style="display: inline;">
                                 <input type="hidden" name="delete_topic" value="{{ topic.id }}">
@@ -64,7 +64,7 @@
 
                     <div class="list-group">
                         {% for tag in tags %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="list-group-item d-flex justify-content-between align-items-center" style="background-color: var(--card-bg); color: var(--text-color); border-color: var(--border-color);">
                             {{ tag.name }}
                             <form method="POST" style="display: inline;">
                                 <input type="hidden" name="delete_tag" value="{{ tag.id }}">
@@ -102,7 +102,7 @@
 
                     <div class="list-group">
                         {% for rank in ranks %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="list-group-item d-flex justify-content-between align-items-center" style="background-color: var(--card-bg); color: var(--text-color); border-color: var(--border-color);">
                             {{ rank.name }}
                             <form method="POST" style="display: inline;">
                                 <input type="hidden" name="delete_rank" value="{{ rank.id }}">
