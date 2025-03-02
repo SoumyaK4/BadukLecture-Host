@@ -163,6 +163,23 @@ main {
     object-fit: cover;
 }
 
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s;
+}
+
+.lecture-thumbnail:hover .play-button {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
 .lecture-thumbnail .play-button {
     position: absolute;
     top: 50%;

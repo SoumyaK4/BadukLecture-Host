@@ -1,10 +1,9 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     const topicFilter = document.getElementById('topic-filter');
     const tagFilter = document.getElementById('tag-filter');
     const rankFilter = document.getElementById('rank-filter');
-    const sortSelect = document.getElementById('sort-select');
+    //const sortSelect = document.getElementById('sort-select'); // Removed sortSelect
     const resultsContainer = document.getElementById('results-container');
     const loadMoreBtn = document.getElementById('load-more');
 
@@ -38,9 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedTopic = topicFilter.value;
         const selectedTag = tagFilter.value;
         const selectedRank = rankFilter.value;
-        const sortBy = sortSelect.value;
+        //const sortBy = sortSelect.value; // Removed sortBy
 
-        let url = `/api/search?page=${currentPage}&q=${encodeURIComponent(searchQuery)}&sort=${sortBy}`;
+        let url = `/api/search?page=${currentPage}&q=${encodeURIComponent(searchQuery)}&sort=-publish_date`; //Always sort by newest
 
         if (selectedTopic) {
             url += `&topics[]=${selectedTopic}`;
@@ -81,26 +80,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Append lectures to the container
                 data.lectures.forEach(lecture => {
                     const lectureEl = document.createElement('div');
-                    lectureEl.className = 'col-md-4 col-sm-6 mb-4';
+                    lectureEl.className = 'col-md-4 mb-4';
                     lectureEl.innerHTML = `
-                        <div class="card h-100">
-                            <div class="card-img-top position-relative">
-                                <img src="${lecture.thumbnail_url}" alt="${lecture.title}" class="img-fluid">
-                                <button class="play-btn" data-youtube-id="${lecture.youtube_id}">
-                                    <i class="bi bi-play-circle-fill"></i>
-                                </button>
+                        <div class="lecture-card">
+                            <div class="lecture-thumbnail" onclick="openVideoModal('${lecture.youtube_id}')" style="cursor: pointer;">
+                                <img src="${lecture.thumbnail_url}" alt="${lecture.title}">
+                                <i class="fas fa-play-circle play-button"></i>
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title">${lecture.title}</h5>
-                                <div class="card-meta">
-                                    <small class="text-muted">
-                                        ${new Date(lecture.publish_date).toLocaleDateString()}
-                                    </small>
-                                    ${lecture.rank ? `<span class="badge bg-primary ms-2">${lecture.rank}</span>` : ''}
+                            <h3 class="lecture-title" onclick="openVideoModal('${lecture.youtube_id}')" style="cursor: pointer;">
+                                ${lecture.title}
+                            </h3>
+                            <div class="lecture-meta">
+                                <div class="topics mb-1">
+                                    ${lecture.topics.map(topic => `<span class="badge bg-primary me-1">${topic}</span>`).join('')}
                                 </div>
-                                <div class="card-tags mt-2">
-                                    ${lecture.topics.map(topic => `<span class="badge bg-secondary me-1">${topic}</span>`).join('')}
+                                <div class="tags mb-1">
                                     ${lecture.tags.map(tag => `<span class="badge bg-info me-1">${tag}</span>`).join('')}
+                                </div>
+                                <div class="rank mb-1">
+                                    ${lecture.rank ? `<span class="badge bg-secondary">${lecture.rank}</span>` : ''}
+                                </div>
+                                <div class="date text-muted small">
+                                    ${new Date(lecture.publish_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                                 </div>
                             </div>
                         </div>
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     topicFilter.addEventListener('change', () => performSearch(true));
     tagFilter.addEventListener('change', () => performSearch(true));
     rankFilter.addEventListener('change', () => performSearch(true));
-    sortSelect.addEventListener('change', () => performSearch(true));
+    //sortSelect.addEventListener('change', () => performSearch(true)); //Removed sortSelect listener
 
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;

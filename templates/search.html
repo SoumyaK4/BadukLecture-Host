@@ -34,10 +34,7 @@
                     {% endfor %}
                 </select>
 
-                <select id="sort-select" class="form-select">
-                    <option value="date">Date (Newest)</option>
-                    <option value="rank">Rank (Beg-Adv)</option>
-                </select>
+                <!-- Sort removed, always sorted by newest -->
             </div>
         </div>
     </div>
@@ -55,5 +52,6 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/video.js') }}"></script>
 <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 {% endblock %}
