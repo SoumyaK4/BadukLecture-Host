@@ -51,6 +51,11 @@ main {
     background-color: var(--input-bg);
     color: var(--input-text);
     border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(134, 183, 254, 0.25);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* Header */
@@ -199,14 +204,14 @@ main {
 
 /* Footer */
 footer {
-    background-color: var(--card-bg);
+    background-color: #1a1a1a;
     padding: 1rem 0;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid #444444;
     margin-top: auto;
 }
 
 footer p {
-    color: var(--text-color);
+    color: #ffffff;
     margin: 0;
     font-size: 0.9rem;
 }
@@ -369,12 +374,12 @@ footer p {
 
 [data-theme="dark"] {
     --body-bg: #121212;
-    --text-color: #e4e6eb;
+    --text-color: #ffffff;
     --card-bg: #1e1e1e;
-    --border-color: #333333;
+    --border-color: #444444;
     --input-bg: #2a2a2a;
-    --input-text: #e4e6eb;
-    --input-border: #444444;
+    --input-text: #ffffff;
+    --input-border: #555555;
     --navbar-bg: #1a1a1a;
     --navbar-text: #ffffff;
     --navbar-brand-color: #ffffff;
