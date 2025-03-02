@@ -42,11 +42,16 @@ def get_youtube_video_info(url):
     api_url = f'https://www.googleapis.com/youtube/v3/videos?id={video_id}&key={api_key}&part=snippet'
 
     logging.debug(f"Fetching video info for ID: {video_id}")
-    response = requests.get(api_url)
+    try:
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        logging.error(f"YouTube API request error: {str(e)}")
+        raise Exception(f'Failed to fetch video info from YouTube API: {str(e)}')
 
     if response.status_code != 200:
         logging.error(f"YouTube API error: {response.status_code} - {response.text}")
-        raise Exception('Failed to fetch video info from YouTube API')
+        raise Exception(f'YouTube API responded with code {response.status_code}')
 
     data = response.json()
     if not data.get('items'):

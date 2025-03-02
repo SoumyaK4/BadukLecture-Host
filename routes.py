@@ -29,13 +29,21 @@ def search():
 @app.route('/api/search')
 def api_search():
     try:
-        page = request.args.get('page', 1, type=int)
-        per_page = 12
+        # Validate and sanitize input parameters
+        try:
+            page = max(1, request.args.get('page', 1, type=int))
+            per_page = min(50, request.args.get('per_page', 12, type=int))
+        except (ValueError, TypeError):
+            page = 1
+            per_page = 12
+            
         query = request.args.get('q', '')
         topic_ids = request.args.getlist('topics[]')
         tag_ids = request.args.getlist('tags[]')
         rank_id = request.args.get('rank')
         sort_by = request.args.get('sort', 'date')
+        if sort_by not in ['date', 'rank']:
+            sort_by = 'date'
 
         # Build efficient query with eager loading
         lectures_query = Lecture.query.options(

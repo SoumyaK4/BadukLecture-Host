@@ -20,11 +20,11 @@ class User(UserMixin, db.Model):
 
 class Lecture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    youtube_id = db.Column(db.String(20), unique=True, nullable=False)
+    title = db.Column(db.String(200), nullable=False, index=True)
+    youtube_id = db.Column(db.String(20), unique=True, nullable=False, index=True)
     thumbnail_url = db.Column(db.String(200))
-    publish_date = db.Column(db.DateTime, default=datetime.utcnow)
-    rank_id = db.Column(db.Integer, db.ForeignKey('rank.id'))
+    publish_date = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    rank_id = db.Column(db.Integer, db.ForeignKey('rank.id'), index=True)
     
     # Relationships
     topics = db.relationship('Topic', secondary='lecture_topic')

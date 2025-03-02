@@ -1,4 +1,4 @@
-/* Theme variables - optimized */
+/* Theme variables - optimized and consolidated */
 :root {
     --bg-color: #1a1a1a;
     --text-color: #ffffff;
@@ -10,6 +10,14 @@
     --input-border: #404040;
     --link-color: #ffffff;
     --navbar-toggler: #ffffff;
+    
+    /* Consolidated with variables below */
+    --body-bg: #121212;
+    --navbar-bg: #1a1a1a;
+    --navbar-text: #ffffff;
+    --navbar-brand-color: #ffffff;
+    --navbar-link-color: #ffffff;
+    --navbar-link-hover: rgba(255, 255, 255, 0.8);
 }
 
 /* Base styles */
@@ -379,36 +387,7 @@ footer p {
         margin-bottom: 1rem;
     }
 }
-/* CSS Variables for theming */
-:root {
-    --body-bg: #f8f9fa;
-    --text-color: #333;
-    --card-bg: #ffffff;
-    --border-color: #e0e0e0;
-    --input-bg: #ffffff;
-    --input-text: #333;
-    --input-border: #ced4da;
-    --navbar-bg: #343a40;
-    --navbar-text: #ffffff;
-    --navbar-brand-color: #ffffff;
-    --navbar-link-color: #ffffff;
-    --navbar-link-hover: rgba(255, 255, 255, 0.8);
-}
-
-[data-theme="dark"] {
-    --body-bg: #121212;
-    --text-color: #ffffff;
-    --card-bg: #1e1e1e;
-    --border-color: #444444;
-    --input-bg: #2a2a2a;
-    --input-text: #ffffff;
-    --input-border: #555555;
-    --navbar-bg: #1a1a1a;
-    --navbar-text: #ffffff;
-    --navbar-brand-color: #ffffff;
-    --navbar-link-color: #ffffff;
-    --navbar-link-hover: rgba(255, 255, 255, 0.8);
-}
+/* These variables are now consolidated at the top */
 
 /* Main styles */
 body {
