@@ -29,6 +29,7 @@ class Lecture(db.Model):
     # Relationships
     topics = db.relationship('Topic', secondary='lecture_topic')
     tags = db.relationship('Tag', secondary='lecture_tag')
+    rank = db.relationship('Rank')
 
 class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)

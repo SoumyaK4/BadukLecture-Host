@@ -68,3 +68,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 });
+function openVideoModal(videoId) {
+    // Check if modal already exists, if not create it
+    let videoModal = document.getElementById('videoModal');
+    
+    if (!videoModal) {
+        // Create modal structure
+        videoModal = document.createElement('div');
+        videoModal.id = 'videoModal';
+        videoModal.className = 'modal fade';
+        videoModal.setAttribute('tabindex', '-1');
+        videoModal.setAttribute('aria-labelledby', 'videoModalLabel');
+        videoModal.setAttribute('aria-hidden', 'true');
+        
+        videoModal.innerHTML = `
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="videoModalLabel">Lecture Video</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ratio ratio-16x9">
+                            <iframe id="videoFrame" src="" title="YouTube video player" frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(videoModal);
+    }
+    
+    // Set the video source
+    const videoFrame = document.getElementById('videoFrame');
+    videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    
+    // Initialize and show the modal
+    const modal = new bootstrap.Modal(videoModal);
+    modal.show();
+    
+    // Clean up when modal is closed
+    videoModal.addEventListener('hidden.bs.modal', function () {
+        videoFrame.src = '';
+    });
+}
