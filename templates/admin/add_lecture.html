@@ -4,13 +4,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
+            <div class="card" style="background-color: var(--card-bg); border-color: var(--border-color);">
+                <div class="card-header" style="background-color: var(--card-header-bg); border-color: var(--border-color);">
                     <h2 class="card-title mb-4">Add New Lecture</h2>
-                    
+                </div>
+                <div class="card-body">
                     <form method="POST">
                         {{ form.hidden_tag() }}
-                        
+
                         <div class="mb-3">
                             {{ form.title.label(class="form-label") }}
                             {{ form.title(class="form-control") }}
@@ -22,7 +23,7 @@
                             </div>
                             {% endif %}
                         </div>
-                        
+
                         <div class="mb-3">
                             {{ form.youtube_url.label(class="form-label") }}
                             {{ form.youtube_url(class="form-control", placeholder="https://www.youtube.com/watch?v=...") }}
@@ -35,7 +36,7 @@
                             {% endif %}
                             <small class="form-text text-muted">Enter the full YouTube video URL</small>
                         </div>
-                        
+
                         <div class="mb-3">
                             {{ form.topics.label(class="form-label") }}
                             {{ form.topics(class="form-select", multiple="multiple", size="5") }}
@@ -48,7 +49,7 @@
                             {% endif %}
                             <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple topics</small>
                         </div>
-                        
+
                         <div class="mb-3">
                             {{ form.tags.label(class="form-label") }}
                             {{ form.tags(class="form-select", multiple="multiple", size="5") }}
@@ -61,7 +62,7 @@
                             {% endif %}
                             <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple tags</small>
                         </div>
-                        
+
                         <div class="mb-3">
                             {{ form.rank.label(class="form-label") }}
                             {{ form.rank(class="form-select") }}
@@ -73,7 +74,7 @@
                             </div>
                             {% endif %}
                         </div>
-                        
+
                         <div class="d-grid gap-2">
                             {{ form.submit(class="btn btn-primary") }}
                             <a href="{{ url_for('home') }}" class="btn btn-secondary">Cancel</a>

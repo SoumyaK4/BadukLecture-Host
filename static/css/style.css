@@ -562,28 +562,4 @@ body {
         max-width: 100%;
     }
 }
-/* Theme toggle button styles */
-.theme-toggle {
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    color: var(--text-color);
-    font-size: 1.2rem;
-    padding: 0.25rem 0.5rem;
-    margin-left: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 2.2rem;
-    height: 2.2rem;
-    transition: background-color 0.2s;
-}
-
-.theme-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="dark"] .theme-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+/* Dark theme is forced via JavaScript */
