@@ -20,42 +20,50 @@ def search():
 
 @app.route('/api/search')
 def api_search():
-    page = request.args.get('page', 1, type=int)
-    per_page = 12
-    query = request.args.get('q', '')
-    topic_ids = request.args.getlist('topics[]')
-    tag_ids = request.args.getlist('tags[]')
-    rank_id = request.args.get('rank')
-    sort_by = request.args.get('sort', 'date')
-
-    lectures_query = Lecture.query
-
-    if query:
-        lectures_query = lectures_query.filter(Lecture.title.ilike(f'%{query}%'))
-
-    if topic_ids:
-        for topic_id in topic_ids:
-            lectures_query = lectures_query.filter(Lecture.topics.any(Topic.id == topic_id))
-
-    if tag_ids:
-        for tag_id in tag_ids:
-            lectures_query = lectures_query.filter(Lecture.tags.any(Tag.id == tag_id))
-
-    if rank_id:
-        lectures_query = lectures_query.filter_by(rank_id=rank_id)
-
-    if sort_by == 'date':
-        lectures_query = lectures_query.order_by(Lecture.publish_date.desc())
-    elif sort_by == 'rank':
-        lectures_query = lectures_query.order_by(Lecture.rank_id)
-
-    # Add pagination
-    pagination = lectures_query.paginate(page=page, per_page=per_page, error_out=False)
-    lectures = pagination.items
-
     try:
-        return jsonify({
-            'lectures': [{
+        page = request.args.get('page', 1, type=int)
+        per_page = 12
+        query = request.args.get('q', '')
+        topic_ids = request.args.getlist('topics[]')
+        tag_ids = request.args.getlist('tags[]')
+        rank_id = request.args.get('rank')
+        sort_by = request.args.get('sort', 'date')
+
+        lectures_query = Lecture.query
+
+        if query:
+            lectures_query = lectures_query.filter(Lecture.title.ilike(f'%{query}%'))
+
+        if topic_ids:
+            for topic_id in topic_ids:
+                if topic_id:  # Skip empty topic IDs
+                    lectures_query = lectures_query.filter(Lecture.topics.any(Topic.id == topic_id))
+
+        if tag_ids:
+            for tag_id in tag_ids:
+                if tag_id:  # Skip empty tag IDs
+                    lectures_query = lectures_query.filter(Lecture.tags.any(Tag.id == tag_id))
+
+        if rank_id:
+            lectures_query = lectures_query.filter_by(rank_id=rank_id)
+
+        if sort_by == 'date':
+            lectures_query = lectures_query.order_by(Lecture.publish_date.desc())
+        elif sort_by == 'rank':
+            lectures_query = lectures_query.order_by(Lecture.rank_id)
+
+        # Add pagination
+        pagination = lectures_query.paginate(page=page, per_page=per_page, error_out=False)
+        lectures = pagination.items
+
+        lecture_data = []
+        for l in lectures:
+            rank_name = None
+            if l.rank_id:
+                rank = Rank.query.get(l.rank_id)
+                rank_name = rank.name if rank else None
+                
+            lecture_data.append({
                 'id': l.id,
                 'title': l.title,
                 'youtube_id': l.youtube_id,
@@ -63,15 +71,18 @@ def api_search():
                 'publish_date': l.publish_date.isoformat(),
                 'topics': [t.name for t in l.topics],
                 'tags': [t.name for t in l.tags],
-                'rank': Rank.query.get(l.rank_id).name if l.rank_id else None
-            } for l in lectures],
+                'rank': rank_name
+            })
+            
+        return jsonify({
+            'lectures': lecture_data,
             'has_next': pagination.has_next,
             'total_pages': pagination.pages,
             'current_page': pagination.page
         })
     except Exception as e:
         logging.error(f"Error in api_search: {str(e)}")
-        return jsonify({'error': 'An error occurred while processing your request'}), 500
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
