@@ -8,6 +8,8 @@
     --input-bg: #ffffff;
     --input-text: #333333;
     --input-border: #ced4da;
+    --link-color: #333333;
+    --navbar-toggler: #333333;
 }
 
 [data-theme="dark"] {
@@ -19,6 +21,8 @@
     --input-bg: #2d2d2d;
     --input-text: #ffffff;
     --input-border: #404040;
+    --link-color: #ffffff;
+    --navbar-toggler: #ffffff;
 }
 
 /* Base styles */
@@ -56,8 +60,36 @@ main {
     box-shadow: 0 2px 4px var(--border-color);
 }
 
-.navbar-brand img {
-    height: 40px;
+.navbar-brand {
+    color: var(--text-color) !important;
+}
+
+.navbar-toggler {
+    border-color: var(--border-color);
+}
+
+.navbar-toggler-icon {
+    background-image: none !important;
+    position: relative;
+}
+
+.navbar-toggler-icon::before {
+    content: '\f0c9';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--navbar-toggler);
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
 }
 
 /* Theme toggle */
