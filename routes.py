@@ -389,6 +389,78 @@ def import_data():
     
     return render_template('admin/import.html')
 
+@app.route('/admin/reset', methods=['POST'])
+@login_required
+def reset_data():
+    try:
+        # Get all data first for backup
+        lectures = Lecture.query.all()
+        topics = Topic.query.all()
+        tags = Tag.query.all()
+        ranks = Rank.query.all()
+        
+        # Prepare data for export (same as in export_data)
+        export_data = {
+            'lectures': [],
+            'topics': [],
+            'tags': [],
+            'ranks': []
+        }
+        
+        # Add topics
+        for topic in topics:
+            export_data['topics'].append({
+                'id': topic.id,
+                'name': topic.name
+            })
+            
+        # Add tags
+        for tag in tags:
+            export_data['tags'].append({
+                'id': tag.id,
+                'name': tag.name
+            })
+            
+        # Add ranks
+        for rank in ranks:
+            export_data['ranks'].append({
+                'id': rank.id,
+                'name': rank.name
+            })
+            
+        # Add lectures
+        for lecture in lectures:
+            lecture_data = {
+                'id': lecture.id,
+                'title': lecture.title,
+                'youtube_id': lecture.youtube_id,
+                'thumbnail_url': lecture.thumbnail_url,
+                'publish_date': lecture.publish_date.isoformat(),
+                'rank_id': lecture.rank_id,
+                'topic_ids': [topic.id for topic in lecture.topics],
+                'tag_ids': [tag.id for tag in lecture.tags]
+            }
+            export_data['lectures'].append(lecture_data)
+        
+        # Clear database
+        # Use raw SQL for faster deletion of many records
+        db.session.execute(db.text("DELETE FROM lecture_topic"))
+        db.session.execute(db.text("DELETE FROM lecture_tag"))
+        db.session.execute(db.text("DELETE FROM lecture"))
+        db.session.execute(db.text("DELETE FROM topic"))
+        db.session.execute(db.text("DELETE FROM tag"))
+        db.session.execute(db.text("DELETE FROM rank"))
+        db.session.commit()
+        
+        flash('All data has been reset successfully')
+        # Return JSON for download
+        return jsonify(export_data)
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Error resetting data: {str(e)}")
+        flash(f'Error resetting data: {str(e)}')
+        return redirect(url_for('admin_panel'))
+
 @app.route('/admin')
 @login_required
 def admin_panel():
