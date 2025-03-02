@@ -3,48 +3,40 @@
 
 {% block content %}
 <div class="search-container">
-    <!-- Combined Search Area -->
+    <!-- Compact Search Area -->
     <div class="search-area mb-3">
-        <!-- Search Box Row -->
-        <div class="row mb-2">
-            <div class="col-md-12">
+        <div class="filter-container">
+            <!-- Search Box -->
+            <div class="search-box">
                 <input type="text" id="search-input" class="form-control" placeholder="Search lectures...">
             </div>
-        </div>
-        
-        <!-- Filters Row -->
-        <div class="row filters">
-            <div class="col-md-3 mb-2 mb-md-0">
+            
+            <!-- Compact Filters -->
+            <div class="filter-controls">
                 <select id="topic-filter" class="form-select">
                     <option value="">All Topics</option>
                     {% for topic in topics %}
                     <option value="{{ topic.id }}">{{ topic.name }}</option>
                     {% endfor %}
                 </select>
-            </div>
 
-            <div class="col-md-3 mb-2 mb-md-0">
                 <select id="tag-filter" class="form-select">
                     <option value="">All Tags</option>
                     {% for tag in tags %}
                     <option value="{{ tag.id }}">{{ tag.name }}</option>
                     {% endfor %}
                 </select>
-            </div>
 
-            <div class="col-md-3 mb-2 mb-md-0">
                 <select id="rank-filter" class="form-select">
                     <option value="">All Ranks</option>
                     {% for rank in ranks %}
                     <option value="{{ rank.id }}">{{ rank.name }}</option>
                     {% endfor %}
                 </select>
-            </div>
 
-            <div class="col-md-3">
                 <select id="sort-select" class="form-select">
-                    <option value="date">Date (Newest First)</option>
-                    <option value="rank">Rank (Beginner to Advanced)</option>
+                    <option value="date">Date (Newest)</option>
+                    <option value="rank">Rank (Beg-Adv)</option>
                 </select>
             </div>
         </div>
