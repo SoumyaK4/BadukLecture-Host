@@ -3,49 +3,50 @@
 
 {% block content %}
 <div class="search-container">
-    <!-- Search Box -->
-    <div class="search-box mb-4">
-        <input type="text" id="search-input" class="form-control" placeholder="Search lectures...">
-    </div>
-
-    <!-- Filters -->
-    <div class="filters mb-4 row">
-        <div class="filter-section col-md-3">
-            <label class="filter-label">Topics</label>
-            <select id="topic-filter" class="form-select">
-                <option value="">All Topics</option>
-                {% for topic in topics %}
-                <option value="{{ topic.id }}">{{ topic.name }}</option>
-                {% endfor %}
-            </select>
+    <!-- Combined Search Area -->
+    <div class="search-area mb-3">
+        <!-- Search Box Row -->
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <input type="text" id="search-input" class="form-control" placeholder="Search lectures...">
+            </div>
         </div>
+        
+        <!-- Filters Row -->
+        <div class="row filters">
+            <div class="col-md-3 mb-2 mb-md-0">
+                <select id="topic-filter" class="form-select">
+                    <option value="">All Topics</option>
+                    {% for topic in topics %}
+                    <option value="{{ topic.id }}">{{ topic.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="filter-section col-md-3">
-            <label class="filter-label">Tags</label>
-            <select id="tag-filter" class="form-select">
-                <option value="">All Tags</option>
-                {% for tag in tags %}
-                <option value="{{ tag.id }}">{{ tag.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
+            <div class="col-md-3 mb-2 mb-md-0">
+                <select id="tag-filter" class="form-select">
+                    <option value="">All Tags</option>
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="filter-section col-md-3">
-            <label class="filter-label">Rank</label>
-            <select id="rank-filter" class="form-select">
-                <option value="">All Ranks</option>
-                {% for rank in ranks %}
-                <option value="{{ rank.id }}">{{ rank.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
+            <div class="col-md-3 mb-2 mb-md-0">
+                <select id="rank-filter" class="form-select">
+                    <option value="">All Ranks</option>
+                    {% for rank in ranks %}
+                    <option value="{{ rank.id }}">{{ rank.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="filter-section col-md-3">
-            <label class="filter-label">Sort By</label>
-            <select id="sort-select" class="form-select">
-                <option value="date">Date (Newest First)</option>
-                <option value="rank">Rank (Beginner to Advanced)</option>
-            </select>
+            <div class="col-md-3">
+                <select id="sort-select" class="form-select">
+                    <option value="date">Date (Newest First)</option>
+                    <option value="rank">Rank (Beginner to Advanced)</option>
+                </select>
+            </div>
         </div>
     </div>
 
