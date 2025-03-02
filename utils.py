@@ -19,8 +19,11 @@ def get_youtube_video_info(url):
             logging.debug(f"Extracted video ID from youtu.be URL: {video_id}")
         elif parsed_url.hostname in ['www.youtube.com', 'youtube.com']:
             # Handle regular youtube.com URLs
-            query_params = parse_qs(parsed_url.query)
-            video_id = query_params.get('v', [None])[0]
+            if 'v' in parse_qs(parsed_url.query):
+                video_id = parse_qs(parsed_url.query)['v'][0]
+            elif 'live' in parsed_url.path:
+                # Handle live URLs
+                video_id = parsed_url.path.split('/live/')[1].split('?')[0]
             logging.debug(f"Extracted video ID from youtube.com URL: {video_id}")
         else:
             logging.error(f"Unsupported URL hostname: {parsed_url.hostname}")
