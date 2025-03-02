@@ -143,3 +143,12 @@ def manage_metadata():
                          topics=topics,
                          tags=tags,
                          ranks=ranks)
+
+@app.cli.command("create-admin")
+def create_admin():
+    """Create an admin user."""
+    admin = User(username="admin")
+    admin.set_password("BadukAdmin2025!")
+    db.session.add(admin)
+    db.session.commit()
+    print("Admin user created successfully!")
