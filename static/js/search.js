@@ -120,10 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 isLoading = false;
             })
             .catch(error => {
-                console.error('Search error:', error);
-                if (currentPage === 1) {
-                    resultsContainer.innerHTML = '<div class="col-12 text-center my-5"><p>An error occurred while fetching results. Please try again.</p></div>';
-                }
+                resultsContainer.innerHTML = '<div class="col-12 text-center my-5"><p>An error occurred while fetching results. Please try again.</p></div>';
                 isLoading = false;
             });
     }

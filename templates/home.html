@@ -6,7 +6,7 @@
     <div class="col-md-4 mb-4">
         <div class="lecture-card">
             <div class="lecture-thumbnail" onclick="openVideoModal('{{ lecture.youtube_id }}')" style="cursor: pointer;">
-                <img src="{{ lecture.thumbnail_url }}" alt="{{ lecture.title }}">
+                <img src="{{ lecture.thumbnail_url }}" alt="{{ lecture.title }}" loading="lazy">
                 <i class="fas fa-play-circle play-button"></i>
             </div>
             <h3 class="lecture-title" onclick="openVideoModal('{{ lecture.youtube_id }}')" style="cursor: pointer;">

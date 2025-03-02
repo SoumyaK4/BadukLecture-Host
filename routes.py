@@ -10,11 +10,17 @@ from datetime import datetime
 
 @app.route('/')
 def home():
-    lectures = Lecture.query.order_by(Lecture.publish_date.desc()).limit(6).all()
+    # Optimize query by eagerly loading relationships
+    lectures = Lecture.query.options(
+        db.joinedload(Lecture.topics),
+        db.joinedload(Lecture.tags),
+        db.joinedload(Lecture.rank)
+    ).order_by(Lecture.publish_date.desc()).limit(6).all()
     return render_template('home.html', lectures=lectures)
 
 @app.route('/search')
 def search():
+    # Get only necessary metadata
     topics = Topic.query.all()
     tags = Tag.query.all()
     ranks = Rank.query.all()
@@ -31,24 +37,34 @@ def api_search():
         rank_id = request.args.get('rank')
         sort_by = request.args.get('sort', 'date')
 
-        lectures_query = Lecture.query
+        # Build efficient query with eager loading
+        lectures_query = Lecture.query.options(
+            db.joinedload(Lecture.topics),
+            db.joinedload(Lecture.tags)
+        )
 
+        # Apply filters
         if query:
             lectures_query = lectures_query.filter(Lecture.title.ilike(f'%{query}%'))
 
-        if topic_ids:
-            for topic_id in topic_ids:
-                if topic_id:  # Skip empty topic IDs
-                    lectures_query = lectures_query.filter(Lecture.topics.any(Topic.id == topic_id))
+        # More efficient topic filtering
+        if topic_ids and any(topic_ids):
+            # Filter only non-empty topic IDs
+            valid_topic_ids = [tid for tid in topic_ids if tid]
+            if valid_topic_ids:
+                lectures_query = lectures_query.join(Lecture.topics).filter(Topic.id.in_(valid_topic_ids))
 
-        if tag_ids:
-            for tag_id in tag_ids:
-                if tag_id:  # Skip empty tag IDs
-                    lectures_query = lectures_query.filter(Lecture.tags.any(Tag.id == tag_id))
+        # More efficient tag filtering
+        if tag_ids and any(tag_ids):
+            # Filter only non-empty tag IDs
+            valid_tag_ids = [tid for tid in tag_ids if tid]
+            if valid_tag_ids:
+                lectures_query = lectures_query.join(Lecture.tags).filter(Tag.id.in_(valid_tag_ids))
 
         if rank_id:
             lectures_query = lectures_query.filter_by(rank_id=rank_id)
 
+        # Apply sorting
         if sort_by == 'date':
             lectures_query = lectures_query.order_by(Lecture.publish_date.desc())
         elif sort_by == 'rank':
@@ -58,12 +74,20 @@ def api_search():
         pagination = lectures_query.paginate(page=page, per_page=per_page, error_out=False)
         lectures = pagination.items
 
+        # Cache rank lookups
+        rank_cache = {}
+        
+        # Process results
         lecture_data = []
         for l in lectures:
-            rank_name = None
+            # Use cached rank lookup
             if l.rank_id:
-                rank = Rank.query.get(l.rank_id)
-                rank_name = rank.name if rank else None
+                if l.rank_id not in rank_cache:
+                    rank = Rank.query.get(l.rank_id)
+                    rank_cache[l.rank_id] = rank.name if rank else None
+                rank_name = rank_cache[l.rank_id]
+            else:
+                rank_name = None
                 
             lecture_data.append({
                 'id': l.id,
@@ -83,9 +107,7 @@ def api_search():
             'current_page': pagination.page
         })
     except Exception as e:
-        import traceback
-        error_details = traceback.format_exc()
-        logging.error(f"Error in api_search: {str(e)}\n{error_details}")
+        logging.error(f"Error in api_search: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/login', methods=['GET', 'POST'])
