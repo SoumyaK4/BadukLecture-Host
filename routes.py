@@ -53,21 +53,25 @@ def api_search():
     pagination = lectures_query.paginate(page=page, per_page=per_page, error_out=False)
     lectures = pagination.items
 
-    return jsonify({
-        'lectures': [{
-            'id': l.id,
-            'title': l.title,
-            'youtube_id': l.youtube_id,
-            'thumbnail_url': l.thumbnail_url,
-            'publish_date': l.publish_date.isoformat(),
-            'topics': [t.name for t in l.topics],
-            'tags': [t.name for t in l.tags],
-            'rank': Rank.query.get(l.rank_id).name if l.rank_id else None
-        } for l in lectures],
-        'has_next': pagination.has_next,
-        'total_pages': pagination.pages,
-        'current_page': pagination.page
-    })
+    try:
+        return jsonify({
+            'lectures': [{
+                'id': l.id,
+                'title': l.title,
+                'youtube_id': l.youtube_id,
+                'thumbnail_url': l.thumbnail_url,
+                'publish_date': l.publish_date.isoformat(),
+                'topics': [t.name for t in l.topics],
+                'tags': [t.name for t in l.tags],
+                'rank': Rank.query.get(l.rank_id).name if l.rank_id else None
+            } for l in lectures],
+            'has_next': pagination.has_next,
+            'total_pages': pagination.pages,
+            'current_page': pagination.page
+        })
+    except Exception as e:
+        logging.error(f"Error in api_search: {str(e)}")
+        return jsonify({'error': 'An error occurred while processing your request'}), 500
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
